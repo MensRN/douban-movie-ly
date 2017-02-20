@@ -12,7 +12,21 @@ import {
   View
 } from 'react-native';
 
+import NetWork from './data/network.js';
+
 export default class MainApp extends Component {
+
+componentDidMount(){
+    
+    networkObject = new NetWork();
+
+    networkObject.fetchTop250(0,
+    (data)=>{
+      console.log('----------------------------------------------------');
+      console.log('data:' + JSON.stringify(data));
+    });
+}
+
   render() {
     return (
       <View style={styles.container}>
