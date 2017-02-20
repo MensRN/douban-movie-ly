@@ -1,0 +1,8 @@
+1. Download moco standalone jar file from https://github.com/dreamhead/moco
+2. Modify settings.json to add you own json reply if necessary
+3. Modify/add your own json file according to https://github.com/dreamhead/moco/blob/master/moco-doc/apis.md
+4. Use following command to run mock server locally on port 12345 (or any port you like)
+    java -jar moco-runner-<version>-standalone.jar http -p 12345 -g settings.json
+
+// For This Project 
+1. ➜  ~ java -jar moco-runner-0.11.0-standalone.jar http -p 12345 -g settings.json
