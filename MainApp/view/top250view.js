@@ -1,15 +1,24 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image } from 'react-native';
+import Dimensions from 'Dimensions';
 
 import Network from '../model/network';
+
+var {width, height} = Dimensions.get('window');
 
 class TopMovieCell extends Component {
   render() {
     console.log('data:' + JSON.stringify(this.props.movie));
+
     return (
-      <Text>
-        {this.props.movie.title}: {this.props.movie.year}
-      </Text>
+      <View style={styles.item} >
+        <View>
+          <Image source={{ uri: this.props.movie.images.large }}
+            style={styles.cellImage} />
+        </View>
+        <Text>{this.props.movie.title}</Text>
+        <Text>{this.props.movie.year}  {this.props.movie.rating.average}</Text>
+      </View>
     );
   }
 }
@@ -18,7 +27,7 @@ export default class Top250View extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       dataSource: ds.cloneWithRows([])
     };
@@ -28,29 +37,41 @@ export default class Top250View extends Component {
     networkObject = new Network();
 
     networkObject.fetchTop250(0,
-    (data)=>{
-      console.log('----------------------------------------------------');
-      console.log('data:' + JSON.stringify(data.subjects));
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data.subjects),
+      (data) => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(data.subjects),
+        });
       });
-    });
   }
 
   render() {
     return (
-      <View style={{flex: 1, paddingTop: 22}}>
+      <View style={{ flex: 1 }}>
         <ListView
+          contentContainerStyle={styles.list}
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <TopMovieCell movie={rowData} ></TopMovieCell>}
+          renderRow={(rowData) => <TopMovieCell style={styles.item} movie={rowData} ></TopMovieCell>}
         />
       </View>
     )
   }
 }
 
-Top250View.propTypes = {
-  title: PropTypes.string.isRequired,
-  onForward: PropTypes.func.isRequired,
-  onBack: PropTypes.func.isRequired,
-};
+var styles = StyleSheet.create({
+  list: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+  },
+  item: {
+    backgroundColor: '#ffffff',
+    margin: 1,
+    alignItems: 'center',
+    width: (width / 3) - 3,
+    height: ((width / 3) - 3) * 1.8
+  },
+  cellImage:{
+    width: (width / 3) - 3, 
+    height: ((width / 3) - 3) * 1.53
+  }
+});

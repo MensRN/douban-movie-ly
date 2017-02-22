@@ -21,7 +21,7 @@ export default class NavigatorView extends Component {
                             Title: (route, navigator, index, navState) =>
                             { return (<Text>{route.title}</Text>); },
                         }}
-                        style={{ backgroundColor: 'gray' }}
+                        style={{ backgroundColor: 'white'}}
                     />
                 }
                 style={{paddingTop: 64}}
