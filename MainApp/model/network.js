@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 const httpHost = "http://localhost:12345";
 
-class NetWork {
+export default class Network {
 
-    requestNetWork(url, para, update) {
+    requestNetwork(url, para, update) {
         return fetch(httpHost + url)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -13,14 +13,12 @@ class NetWork {
             })
             .then(update)
             .catch((error) => {
-                console.error(error);
+                console.error("Douban Movie Network Error:"+error);
             });
     }
 
     fetchTop250(index, update){
         var para = {"start":index, "count":10};
-        this.requestNetWork("/v2/movie/top250",para,update);
+        this.requestNetwork("/v2/movie/top250",para,update);
     }
 }
-
-export default NetWork;
