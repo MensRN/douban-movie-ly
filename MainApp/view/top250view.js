@@ -8,13 +8,11 @@ var {width, height} = Dimensions.get('window');
 
 class TopMovieCell extends Component {
   render() {
-    console.log('data:' + JSON.stringify(this.props.movie));
-
     return (
       <View style={styles.item} >
-        <View>
+        <View style= {styles.cellImageCon}>
           <Image source={{ uri: this.props.movie.images.large }}
-            style={styles.cellImage} />
+            style={styles.cellImage}/>
         </View>
         <Text>{this.props.movie.title}</Text>
         <Text>{this.props.movie.year}  {this.props.movie.rating.average}</Text>
@@ -25,11 +23,15 @@ class TopMovieCell extends Component {
 
 export default class Top250View extends Component {
 
+  static title = "Top250";
+
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      dataSource: ds.cloneWithRows([]),
+      title: "Top250"
     };
   }
 
@@ -48,6 +50,7 @@ export default class Top250View extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ListView
+          enableEmptySections={true}
           contentContainerStyle={styles.list}
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <TopMovieCell style={styles.item} movie={rowData} ></TopMovieCell>}
@@ -70,8 +73,15 @@ var styles = StyleSheet.create({
     width: (width / 3) - 3,
     height: ((width / 3) - 3) * 1.8
   },
-  cellImage:{
-    width: (width / 3) - 3, 
-    height: ((width / 3) - 3) * 1.53
+  cellImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+    width: null,
+height: null,
+  },
+  cellImageCon:{
+    width: (width / 3) - 3,
+    height: ((width / 3) - 3) * 1.53,
   }
 });
+

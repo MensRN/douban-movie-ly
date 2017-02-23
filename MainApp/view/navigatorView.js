@@ -1,31 +1,55 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, Text } from 'react-native';
-
-import Top25View from './top250view';
+import { AppRegistry, Navigator, View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 
 export default class NavigatorView extends Component {
     render() {
         return (
             <Navigator
-                initialRoute={{ title: 'My Initial Scene', index: 0 }}
+                initialRoute={{ name: this.props.rootScene.name, component: this.props.rootScene, index: 0 }}
                 renderScene={(route, navigator) => {
-                    return <Top25View title="top250View" />
+                    let Component = route.component;
+                    return <Component {...route.params} navigator={navigator} />
                 }}
                 navigationBar={
                     <Navigator.NavigationBar
                         routeMapper={{
-                            LeftButton: (route, navigator, index, navState) =>
-                            { return (<Text>Cancel</Text>); },
+                            LeftButton: (route, navigator, index, navState) => {
+                                if (route.index === 0) {
+                                    return null;
+                                } else {
+                                    return (
+                                        <TouchableHighlight onPress={() => navigator.pop()}>
+                                            <Text>Back</Text>
+                                        </TouchableHighlight>
+                                    );
+                                }
+                            },
                             RightButton: (route, navigator, index, navState) =>
-                            { return (<Text>Done</Text>); },
-                            Title: (route, navigator, index, navState) =>
-                            { return (<Text>{route.title}</Text>); },
+                            { return null; },
+                            Title: (route, navigator, index, navState) => {
+                                return (<Text style={styles.navTitle}>{route.component.title}</Text>);
+                            },
                         }}
-                        style={{ backgroundColor: 'white'}}
+                        style={styles.navBar}
                     />
                 }
-                style={{paddingTop: 64}}
+                style={styles.content}
             />
         )
     }
 }
+
+const styles = StyleSheet.create({
+    content: {
+        paddingTop: 64
+    },
+    navBar: {
+        borderBottomColor: 'silver',
+        borderBottomWidth: 1
+    },
+    navTitle: {
+        flex: 1,
+        paddingTop: 10,
+        fontSize: 20
+    }
+});  
