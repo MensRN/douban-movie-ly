@@ -4,5 +4,8 @@
   },
   {
     "include": "API/subject.json"
+  },
+  {
+    "include": "API/in_theaters.json"
   }
 ]
