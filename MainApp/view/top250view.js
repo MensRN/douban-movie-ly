@@ -7,15 +7,21 @@ import Network from '../model/network';
 var {width, height} = Dimensions.get('window');
 
 class TopMovieCell extends Component {
+  //<Image source={{ }} style={styles.cellImage} />
   render() {
     return (
       <View style={styles.item} >
-        <View style= {styles.cellImageCon}>
-          <Image source={{ uri: this.props.movie.images.large }}
-            style={styles.cellImage}/>
+        <View style={styles.cellImageCon}>
+          <Image
+            source={{ uri: this.props.movie.images.large }}
+            style={styles.container}>
+            <Text style={styles.rating}>
+              {this.props.movie.rating.average}
+            </Text>
+          </Image>
         </View>
         <Text>{this.props.movie.title}</Text>
-        <Text>{this.props.movie.year}  {this.props.movie.rating.average}</Text>
+        <Text>{this.props.movie.year}</Text>
       </View>
     );
   }
@@ -45,7 +51,7 @@ export default class Top250View extends Component {
         });
       });
   }
-
+  
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -73,15 +79,24 @@ var styles = StyleSheet.create({
     width: (width / 3) - 3,
     height: ((width / 3) - 3) * 1.8
   },
-  cellImage: {
+  container: {
     flex: 1,
-    resizeMode: 'cover', // or 'stretch'
-    width: null,
-height: null,
+    width: undefined,
+    height: undefined,
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
   },
-  cellImageCon:{
+  cellImageCon: {
     width: (width / 3) - 3,
     height: ((width / 3) - 3) * 1.53,
+  },
+  rating: {
+    fontSize: 20,
+    color: 'white',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
+    textShadowColor: 'grey'
   }
 });
 
