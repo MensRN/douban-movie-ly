@@ -8,25 +8,25 @@ var {width, height} = Dimensions.get('window');
 
 class TheaterMovieCell extends Component {
 
-    getGenres(genres){
+    getGenres(genres) {
         var string = null;
-        for(index in genres) {
-            if(string == null){
+        for (index in genres) {
+            if (string == null) {
                 string = genres[index];
-            }else {
-                string = string +"，"+ genres[index];
+            } else {
+                string = string + "，" + genres[index];
             }
         }
         return string;
     }
 
-    getDirectors(directors){
+    getDirectors(directors) {
         var string = null;
-        for(index in directors) {
-            if(string == null){
+        for (index in directors) {
+            if (string == null) {
                 string = directors[index].name;
-            }else {
-                string = string +"，"+ directors[index].name;
+            } else {
+                string = string + "，" + directors[index].name;
             }
         }
         return string;
@@ -39,15 +39,22 @@ class TheaterMovieCell extends Component {
                     <Image
                         source={{ uri: this.props.movie.images.large }}
                         style={styles.container}>
-                        <Text style={styles.rating}>
-                            {this.props.movie.rating.average}
-                        </Text>
+
                     </Image>
                 </View>
                 <View style={styles.cellTextCon}>
-                    <Text style={styles.cellTextTitle}>{this.props.movie.title}</Text>
-                    <Text style={styles.cellTextDirector}>导演：{this.getDirectors(this.props.movie.directors)}</Text>
-                    <Text style={styles.cellTextGenres}>{this.getGenres(this.props.movie.genres)}</Text>
+                    <Text style={styles.cellTextTitle}>
+                        {this.props.movie.title}
+                    </Text>
+                    <Text style={styles.cellTextDirector}>
+                        导演：{this.getDirectors(this.props.movie.directors)}
+                    </Text>
+                    <Text style={styles.cellTextGenres}>
+                        {this.getGenres(this.props.movie.genres)}
+                    </Text>
+                    <Text style={styles.rating}>
+                        {this.props.movie.rating.average}
+                    </Text>
                 </View>
             </View>
         );
@@ -114,31 +121,28 @@ var styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
     cellImageCon: {
-        width: 80,
-        height: (80) * 1.53,
+        width: 60,
+        height: (60) * 1.53,
     },
     cellTextCon: {
-        margin:20
+        margin: 10
     },
-    cellTextTitle:{
-        fontSize:24,
-        margin:5
+    cellTextTitle: {
+        fontSize: 14,
+        margin: 3
     },
-    cellTextDirector:{
-        fontSize:12,
-        margin:5,
-        color:'grey'
+    cellTextDirector: {
+        fontSize: 12,
+        margin: 3,
+        color: 'grey'
     },
-    cellTextGenres:{
-        fontSize:14,
-        margin:5,
-        color:'grey'
+    cellTextGenres: {
+        fontSize: 12,
+        margin: 3,
+        color: 'grey'
     },
     rating: {
-        fontSize: 20,
-        color: 'white',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 1,
-        textShadowColor: 'grey'
+        margin: 3,
+        fontSize: 10,
     }
 });
