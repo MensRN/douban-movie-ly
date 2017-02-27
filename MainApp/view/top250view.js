@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import Dimensions from 'Dimensions';
 
 import Network from '../model/network';
+import SubjectView from './subjectview';
 
 var {width, height} = Dimensions.get('window');
 
@@ -59,12 +60,22 @@ export default class Top250View extends Component {
       });
   }
 
+  _pressButton() {
+    const { navigator } = this.props;
+    if (navigator) {
+      navigator.push({
+        name: 'SubjectView',
+        component: SubjectView,
+      })
+    }
+  }
+
   componentDidMount() {
     this.loadData();
   }
 
   onEndReached = () => {
-    if (this.state.loadingMore==false) {
+    if (this.state.loadingMore == false) {
       this.setState({ loadingMore: true });
       this.loadData();
     }
@@ -84,7 +95,10 @@ export default class Top250View extends Component {
           enableEmptySections={true}
           contentContainerStyle={styles.list}
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <TopMovieCell style={styles.item} movie={rowData} ></TopMovieCell>}
+          renderRow={(rowData) =>
+            <TouchableOpacity onPress={this._pressButton.bind(this)}>
+              <TopMovieCell style={styles.item} movie={rowData} ></TopMovieCell>
+            </TouchableOpacity>}
           onEndReached={this.onEndReached}
           renderFooter={this.renderFooter}
         />

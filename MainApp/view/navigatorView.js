@@ -18,8 +18,8 @@ export default class NavigatorView extends Component {
                                     return null;
                                 } else {
                                     return (
-                                        <TouchableHighlight onPress={() => navigator.pop()}>
-                                            <Text>Back</Text>
+                                        <TouchableHighlight style={styles.navButtonBg} >
+                                            <Text style={styles.navButtonButton} onPress={() => navigator.pop()}>Back</Text>
                                         </TouchableHighlight>
                                     );
                                 }
@@ -51,5 +51,15 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 10,
         fontSize: 20
+    },
+    navButtonBg: {
+        flex: 1,
+        paddingTop: 10,
+        paddingLeft: 10,
+    },
+    navButtonButton: {
+        fontSize:20,
+        color:"#157EFB"
     }
+
 });  
