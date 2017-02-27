@@ -111,14 +111,14 @@ export default class InTheaters extends Component {
     }
 
     onEndReached = () => {
-        if (true) {
+        if (this.state.loadingMore==false) {
             this.setState({ loadingMore: true });
             this.loadData();
         }
     }
     renderFooter = () => {
         if (this.state.loadingMore) {
-            return <ActivityIndicator />;
+            return <ActivityIndicator style={{alignItems: 'center',}} />;
         } else {
             return <View />
         }

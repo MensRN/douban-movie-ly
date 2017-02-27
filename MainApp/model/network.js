@@ -26,7 +26,7 @@ export default class Network {
                 return response.json()
             })
             .then((responseJson) => {
-                console.log('responseJson:' + JSON.stringify(responseJson));
+                // console.log('responseJson:' + JSON.stringify(responseJson));
                 return responseJson;
             })
             .then(update)
@@ -35,8 +35,8 @@ export default class Network {
             });
     }
 
-    static fetchTop250(index, update) {
-        var para = { "start": index, "count": 10 };
+    static fetchTop250(index, count, update) {
+        var para = { "start": index, "count": count };
         this.requestNetwork(URLS.top, para, update);
     }
 

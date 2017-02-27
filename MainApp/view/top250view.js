@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView, StyleSheet, Image } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import Dimensions from 'Dimensions';
 
 import Network from '../model/network';
@@ -7,7 +7,6 @@ import Network from '../model/network';
 var {width, height} = Dimensions.get('window');
 
 class TopMovieCell extends Component {
-  //<Image source={{ }} style={styles.cellImage} />
   render() {
     return (
       <View style={styles.item} >
@@ -36,22 +35,48 @@ export default class Top250View extends Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
     this.state = {
+      index: 0,
+      loadingMore: false,
+      items: [],
       dataSource: ds.cloneWithRows([]),
       title: "Top250"
     };
   }
 
-  componentDidMount() {
-    // networkObject = new Network();
-
-    Network.fetchTop250(0,
+  loadData() {
+    Network.fetchTop250(this.state.index, 10,
       (data) => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(data.subjects),
-        });
+        if (data.subjects != undefined && data.subjects.length > 0) {
+          const newItems = [... this.state.items, ...data.subjects];
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(newItems),
+            index: this.state.index + 1,
+            loadingMore: false,
+            isRefreshing: false,
+            items: newItems,
+          });
+        }
       });
   }
-  
+
+  componentDidMount() {
+    this.loadData();
+  }
+
+  onEndReached = () => {
+    if (this.state.loadingMore==false) {
+      this.setState({ loadingMore: true });
+      this.loadData();
+    }
+  }
+  renderFooter = () => {
+    if (this.state.loadingMore) {
+      return <ActivityIndicator style={{ alignItems: 'center', }} />;
+    } else {
+      return <View />
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -60,6 +85,8 @@ export default class Top250View extends Component {
           contentContainerStyle={styles.list}
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <TopMovieCell style={styles.item} movie={rowData} ></TopMovieCell>}
+          onEndReached={this.onEndReached}
+          renderFooter={this.renderFooter}
         />
       </View>
     )
