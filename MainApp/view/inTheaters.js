@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView, StyleSheet, Image } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Dimensions from 'Dimensions';
 
 import Network from '../model/network';
+
+import SubjectView from './subjectview';
 
 var {width, height} = Dimensions.get('window');
 
@@ -71,19 +73,32 @@ export default class InTheaters extends Component {
 
         this.state = {
             dataSource: ds.cloneWithRows([]),
-            title: "正在上映"
+            title: "正在上映",
+            flag:0
         };
     }
 
-    componentDidMount() {
-        networkObject = new Network();
+    _pressButton() {
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.push({
+                name: 'SubjectView',
+                component: SubjectView,
+            })
+        }
+    }
 
-        networkObject.fetchTheaters(0,
+    componentDidMount() {
+        // networkObject = new Network();
+        if(this.state.flag==0){
+            Network.fetchTheaters(0,
             (data) => {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(data.subjects),
+                    flag:1
                 });
             });
+        }
     }
 
     render() {
@@ -93,7 +108,11 @@ export default class InTheaters extends Component {
                     enableEmptySections={true}
                     contentContainerStyle={styles.list}
                     dataSource={this.state.dataSource}
-                    renderRow={(rowData) => <TheaterMovieCell style={styles.item} movie={rowData} ></TheaterMovieCell>}
+                    renderRow={(rowData) =>
+                        <TouchableOpacity onPress={this._pressButton.bind(this)}>
+                            <TheaterMovieCell style={styles.item} movie={rowData} ></TheaterMovieCell>
+                        </TouchableOpacity>
+                    }
                 />
             </View>
         )

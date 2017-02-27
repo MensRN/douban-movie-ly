@@ -42,9 +42,9 @@ export default class Top250View extends Component {
   }
 
   componentDidMount() {
-    networkObject = new Network();
+    // networkObject = new Network();
 
-    networkObject.fetchTop250(0,
+    Network.fetchTop250(0,
       (data) => {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(data.subjects),
