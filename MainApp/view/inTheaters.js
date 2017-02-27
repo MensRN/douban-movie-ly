@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Dimensions from 'Dimensions';
 
 import Network from '../model/network';
@@ -72,9 +72,11 @@ export default class InTheaters extends Component {
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
         this.state = {
+            index: 0,
+            loadingMore: false,
+            items: [],
             dataSource: ds.cloneWithRows([]),
             title: "正在上映",
-            flag:0
         };
     }
 
@@ -88,16 +90,37 @@ export default class InTheaters extends Component {
         }
     }
 
-    componentDidMount() {
-        // networkObject = new Network();
-        if(this.state.flag==0){
-            Network.fetchTheaters(0,
+    loadData() {
+        Network.fetchTheaters(this.state.index, 10,
             (data) => {
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(data.subjects),
-                    flag:1
-                });
+                if (data.subjects!=undefined&&data.subjects.length > 0) {
+                    const newItems = [... this.state.items, ...data.subjects];
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(newItems),
+                        index: this.state.index + 1,
+                        loadingMore: false,
+                        isRefreshing: false,
+                        items: newItems,
+                    });
+                }
             });
+    }
+
+    componentDidMount() {
+        this.loadData();
+    }
+
+    onEndReached = () => {
+        if (true) {
+            this.setState({ loadingMore: true });
+            this.loadData();
+        }
+    }
+    renderFooter = () => {
+        if (this.state.loadingMore) {
+            return <ActivityIndicator />;
+        } else {
+            return <View />
         }
     }
 
@@ -113,6 +136,8 @@ export default class InTheaters extends Component {
                             <TheaterMovieCell style={styles.item} movie={rowData} ></TheaterMovieCell>
                         </TouchableOpacity>
                     }
+                    onEndReached={this.onEndReached}
+                    renderFooter={this.renderFooter}
                 />
             </View>
         )

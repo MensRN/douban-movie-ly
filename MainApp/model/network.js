@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const doubanHost = "http://api.douban.com/v2/";
+const doubanHost = "https://api.douban.com/v2/";
 const testHost = "http://localhost:12345/v2/";
 
 export const URLS = {
@@ -11,7 +11,6 @@ export const URLS = {
 export default class Network {
 
     static requestNetwork(url, para, update) {
-        var requestUrl = testHost + url;
         var paraString = null;
         for (var property in para) {
             if (paraString == null) {
@@ -24,7 +23,6 @@ export default class Network {
         console.log('requestUrl:' + requestUrl);
         return fetch(requestUrl)
             .then((response) => {
-                console.log('responseJson:' + response);
                 return response.json()
             })
             .then((responseJson) => {
@@ -42,8 +40,8 @@ export default class Network {
         this.requestNetwork(URLS.top, para, update);
     }
 
-    static fetchTheaters(index, update) {
-        var para = { "start": index, "count": 10 };
+    static fetchTheaters(index, count, update) {
+        var para = { "start": index, "count": count };
         this.requestNetwork(URLS.in_theaters, para, update);
     }
 }
