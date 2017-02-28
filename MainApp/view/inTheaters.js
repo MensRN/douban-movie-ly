@@ -165,8 +165,8 @@ var styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
     cellImageCon: {
-        width: 60,
-        height: (60) * 1.53,
+        width: 75,
+        height: (75) * 1.53,
     },
     cellTextCon: {
         margin: 10
@@ -187,6 +187,6 @@ var styles = StyleSheet.create({
     },
     rating: {
         margin: 3,
-        fontSize: 10,
+        fontSize: 12,
     }
 });

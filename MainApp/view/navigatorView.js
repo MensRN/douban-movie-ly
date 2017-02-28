@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { AppRegistry, Navigator, View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native';
 
 export default class NavigatorView extends Component {
     render() {
@@ -18,8 +18,11 @@ export default class NavigatorView extends Component {
                                     return null;
                                 } else {
                                     return (
-                                        <TouchableHighlight style={styles.navButtonBg} >
-                                            <Text style={styles.navButtonButton} onPress={() => navigator.pop()}>Back</Text>
+                                        <TouchableHighlight style={styles.navButtonBg}>
+                                            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                                                <Image source={require('../resources/back.png')}></Image>
+                                                <Text style={styles.navButtonButton} onPress={() => navigator.pop()}>Back</Text>
+                                            </View>
                                         </TouchableHighlight>
                                     );
                                 }
@@ -50,16 +53,18 @@ const styles = StyleSheet.create({
     navTitle: {
         flex: 1,
         paddingTop: 10,
-        fontSize: 20
+        fontSize: 17
     },
     navButtonBg: {
         flex: 1,
-        paddingTop: 10,
         paddingLeft: 10,
+        justifyContent: 'center',
+        width:88,
+        height:44
     },
     navButtonButton: {
-        fontSize:20,
-        color:"#157EFB"
+        fontSize: 17,
+        paddingLeft: 5,
+        color: "#157EFB"
     }
-
 });  
