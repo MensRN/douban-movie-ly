@@ -172,21 +172,23 @@ var styles = StyleSheet.create({
         margin: 10
     },
     cellTextTitle: {
-        fontSize: 14,
-        margin: 3
+        fontSize: 16,
+        margin: 3,
+        marginBottom:10
     },
     cellTextDirector: {
-        fontSize: 12,
+        fontSize: 14,
         margin: 3,
         color: 'grey'
     },
     cellTextGenres: {
-        fontSize: 12,
+        fontSize: 14,
         margin: 3,
         color: 'grey'
     },
     rating: {
         margin: 3,
+        marginTop:10,
         fontSize: 12,
     }
 });
