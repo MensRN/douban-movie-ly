@@ -24,8 +24,8 @@ export default class MainApp extends Component {
         <TabNavigator.Item 
           selected={this.state.selectedTab === firstScene.title}
           title={firstScene.title}
-          renderIcon={() => <Image source={require('../resources/top.png')} />}
-          renderSelectedIcon={() => <Image source={require('../resources/tops.png')} />}
+          renderIcon={() => <Image source={require('../resources/theater.png')} />}
+          renderSelectedIcon={() => <Image source={require('../resources/theaters.png')} />}
           onPress={() => this.setState({ selectedTab: firstScene.title })}>
           {<NavigatorView rootScene={firstScene}/>}
         </TabNavigator.Item>
@@ -40,8 +40,8 @@ export default class MainApp extends Component {
         <TabNavigator.Item
           selected={this.state.selectedTab === thirdScene.title}
           title={thirdScene.title}
-          renderIcon={() => <Image source={require('../resources/top.png')} />}
-          renderSelectedIcon={() => <Image source={require('../resources/tops.png')} />}
+          renderIcon={() => <Image source={require('../resources/want.png')} />}
+          renderSelectedIcon={() => <Image source={require('../resources/wants.png')} />}
           onPress={() => this.setState({ selectedTab: thirdScene.title })}>
           {<NavigatorView rootScene={thirdScene}/>}
         </TabNavigator.Item >
