@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Navigator } from 'react-native';
 import Dimensions from 'Dimensions';
 
 import Network from '../model/network';
@@ -36,29 +36,31 @@ class TheaterMovieCell extends Component {
 
     render() {
         return (
-            <View style={styles.item} >
-                <View style={styles.cellImageCon}>
-                    <Image
-                        source={{ uri: this.props.movie.images.large }}
-                        style={styles.container}>
+            <TouchableOpacity onPress={() => { this.props.onSelectMovie(this.props.movie); }}>
+                <View style={styles.item} >
+                    <View style={styles.cellImageCon}>
+                        <Image
+                            source={{ uri: this.props.movie.images.large }}
+                            style={styles.container}>
 
-                    </Image>
+                        </Image>
+                    </View>
+                    <View style={styles.cellTextCon}>
+                        <Text style={styles.cellTextTitle}>
+                            {this.props.movie.title}
+                        </Text>
+                        <Text style={styles.cellTextDirector}>
+                            导演：{this.getDirectors(this.props.movie.directors)}
+                        </Text>
+                        <Text style={styles.cellTextGenres}>
+                            {this.getGenres(this.props.movie.genres)}
+                        </Text>
+                        <Text style={styles.rating}>
+                            {this.props.movie.rating.average}
+                        </Text>
+                    </View>
                 </View>
-                <View style={styles.cellTextCon}>
-                    <Text style={styles.cellTextTitle}>
-                        {this.props.movie.title}
-                    </Text>
-                    <Text style={styles.cellTextDirector}>
-                        导演：{this.getDirectors(this.props.movie.directors)}
-                    </Text>
-                    <Text style={styles.cellTextGenres}>
-                        {this.getGenres(this.props.movie.genres)}
-                    </Text>
-                    <Text style={styles.rating}>
-                        {this.props.movie.rating.average}
-                    </Text>
-                </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }
@@ -80,12 +82,16 @@ export default class InTheaters extends Component {
         };
     }
 
-    _pressButton() {
+    pressButton(movie) {
+
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({
                 name: 'SubjectView',
                 component: SubjectView,
+                params: {
+                    movie: movie
+                }
             })
         }
     }
@@ -93,7 +99,7 @@ export default class InTheaters extends Component {
     loadData() {
         Network.fetchTheaters(this.state.index, 10,
             (data) => {
-                if (data.subjects!=undefined&&data.subjects.length > 0) {
+                if (data.subjects != undefined && data.subjects.length > 0) {
                     const newItems = [... this.state.items, ...data.subjects];
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRows(newItems),
@@ -111,14 +117,15 @@ export default class InTheaters extends Component {
     }
 
     onEndReached = () => {
-        if (this.state.loadingMore==false) {
+        if (this.state.loadingMore == false) {
             this.setState({ loadingMore: true });
             this.loadData();
         }
     }
+
     renderFooter = () => {
         if (this.state.loadingMore) {
-            return <ActivityIndicator style={{alignItems: 'center',}} />;
+            return <ActivityIndicator style={{ alignItems: 'center', }} />;
         } else {
             return <View />
         }
@@ -132,9 +139,7 @@ export default class InTheaters extends Component {
                     contentContainerStyle={styles.list}
                     dataSource={this.state.dataSource}
                     renderRow={(rowData) =>
-                        <TouchableOpacity onPress={this._pressButton.bind(this)}>
-                            <TheaterMovieCell style={styles.item} movie={rowData} ></TheaterMovieCell>
-                        </TouchableOpacity>
+                        <TheaterMovieCell style={styles.item} movie={rowData} onSelectMovie={() => this.pressButton(rowData)}></TheaterMovieCell>
                     }
                     onEndReached={this.onEndReached}
                     renderFooter={this.renderFooter}
@@ -151,6 +156,7 @@ var styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     item: {
+        width: width,
         backgroundColor: '#ffffff',
         margin: 1,
         alignItems: 'center',
@@ -174,7 +180,7 @@ var styles = StyleSheet.create({
     cellTextTitle: {
         fontSize: 16,
         margin: 3,
-        marginBottom:10
+        marginBottom: 10
     },
     cellTextDirector: {
         fontSize: 14,
@@ -188,7 +194,7 @@ var styles = StyleSheet.create({
     },
     rating: {
         margin: 3,
-        marginTop:10,
+        marginTop: 10,
         fontSize: 12,
     }
 });

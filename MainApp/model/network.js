@@ -31,7 +31,7 @@ export default class Network {
             })
             .then(update)
             .catch((error) => {
-                console.error("Douban Movie Network Error:" + error);
+                console.log("Douban Movie Network Error:" + error);
             });
     }
 
