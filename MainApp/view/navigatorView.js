@@ -10,6 +10,13 @@ export default class NavigatorView extends Component {
                     let Component = route.component;
                     return <Component {...route.params} navigator={navigator} />
                 }}
+                onWillFocus={(route) => {
+                    if (route.index != 0) {
+                        this.props.showTabBar(false);
+                    } else {
+                        this.props.showTabBar(true);
+                     }
+                }}
                 navigationBar={
                     <Navigator.NavigationBar
                         routeMapper={{
@@ -19,7 +26,7 @@ export default class NavigatorView extends Component {
                                 } else {
                                     return (
                                         <TouchableHighlight style={styles.navButtonBg}>
-                                            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                                                 <Image source={require('../resources/back.png')}></Image>
                                                 <Text style={styles.navButtonButton} onPress={() => navigator.pop()}>Back</Text>
                                             </View>
@@ -59,8 +66,8 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: 10,
         justifyContent: 'center',
-        width:88,
-        height:44
+        width: 88,
+        height: 44
     },
     navButtonButton: {
         fontSize: 17,

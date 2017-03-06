@@ -83,7 +83,6 @@ export default class InTheaters extends Component {
     }
 
     pressButton(movie) {
-
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({
