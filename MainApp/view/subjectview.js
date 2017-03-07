@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 
 import Network from '../model/network';
 
@@ -16,9 +16,7 @@ export default class SubjectView extends Component {
     const castsDsConst = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       movie: null,
-      genresDS: genresDsConst.cloneWithRows([]),
-      directorsDs: directorsDsConst.cloneWithRows([]),
-      castsDs: castsDsConst.cloneWithRows([]),
+      showSummary: false,
     };
   }
 
@@ -64,10 +62,20 @@ export default class SubjectView extends Component {
     this.loadData();
   }
 
+  showAllSummary() {
+    this.setState({
+      showSummary: !this.state.showSummary
+    });
+  }
+
   render() {
     if (this.state.movie != null) {
+      if (this.state.movie.countries == undefined) {
+        this.state.movie.countries = [];
+      }
       return (
-        <ScrollView>
+        <ScrollView style={{ backgroundColor: '#EEE' }}>
+          {/* 影片信息 */}
           <View style={styles.topViewContainer}>
             <View style={styles.imageCon}>
               <Image
@@ -82,14 +90,70 @@ export default class SubjectView extends Component {
               <Text style={styles.titleOriginal}>
                 {this.state.movie.original_title}
               </Text>
+              <View style={styles.titleGenresBg}>
+                {this.state.movie.genres.map((x, i) => <Text key={i} style={styles.titleGenres}>{x}</Text>)}
+              </View>
               <Text style={styles.titleDirectors}>
-                导演：{this.getDirectors(this.state.movie.directors)}
+                {this.state.movie.year}
               </Text>
-              <Text style={styles.titleGenres}>
-                {this.getGenres(this.state.movie.genres)}
-              </Text>
+              <View style={styles.titleGenresBg}>
+                {this.state.movie.countries.map((x, i) => <Text key={i} style={{ fontSize: 12 }}>{x}</Text>)}
+              </View>
+              <View style={styles.imageLeftCon}>
+                <Text style={styles.titleDirectors}>
+                  评分:{this.state.movie.rating.average}
+                </Text>
+              </View>
+              <View style={styles.imageLeftCon}>
+                <Text style={styles.titleDirectors}>
+                  想看:{this.state.movie.wish_count}
+                </Text>
+                <Text style={styles.titleDirectors}>
+                  看过:{this.state.movie.reviews_count}
+                </Text>
+              </View>
             </View>
           </View>
+          {/* 简介 */}
+          <View style={styles.summaryContainer}>
+            <Text >
+              影片简介：
+            </Text>
+            <Text numberOfLines={this.state.showSummary ? 0 : 3} style={styles.summaryText} >
+              {this.state.movie.summary}
+            </Text>
+            <TouchableOpacity style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingTop: 5 }} onPress={this.showAllSummary.bind(this)}>
+              {this.state.showSummary ?
+                <Text style={{ fontSize: 12 }}>收起</Text> :
+                <Text style={{ fontSize: 12 }}>展开</Text>}
+            </TouchableOpacity>
+          </View>
+          {/* 演职人员 */}
+          <ScrollView
+            automaticallyAdjustContentInsets={false}
+            horizontal={true}
+            style={styles.castsViewContainers}>
+            <View>
+              <Text>导演：</Text>
+              <View style={styles.castsViewContainers}>
+                {this.state.movie.directors.map((x, i) =>
+                  <View key={i} style={styles.castsViewContainer} >
+                    <Image source={{ uri: x.avatars.large }} style={styles.castsImage} />
+                    <Text numberOfLines={1} style={styles.castsText} >{x.name}</Text>
+                  </View>)}
+              </View>
+            </View>
+            <View>
+              <Text>主演：</Text>
+              <View style={styles.castsViewContainers}>
+                {this.state.movie.casts.map((x, i) =>
+                  <View key={i} style={styles.castsViewContainer} >
+                    <Image source={{ uri: x.avatars.large }} style={styles.castsImage} />
+                    <Text numberOfLines={1} style={styles.castsText} >{x.name}</Text>
+                  </View>)}
+              </View>
+            </View>
+          </ScrollView>
         </ScrollView>
       );
     } else {
@@ -101,21 +165,32 @@ export default class SubjectView extends Component {
 var styles = StyleSheet.create({
   topViewContainer: {
     flexDirection: 'row',
-    margin: 10
+    backgroundColor: '#fff',
+    marginBottom: 5,
   },
   titleChinese: {
     fontSize: 17,
+    paddingTop: 10
   },
   titleOriginal: {
     fontSize: 12,
   },
   titleDirectors: {
     fontSize: 12,
-    color: 'gray'
+    color: 'gray',
+    padding: 2,
+  },
+  titleGenresBg: {
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    padding: 2,
   },
   titleGenres: {
     fontSize: 12,
-    color: 'gray'
+    color: 'white',
+    backgroundColor: '#111',
+    marginRight: 5,
+    padding: 3,
   },
   textCon: {
     marginLeft: 10
@@ -131,5 +206,36 @@ var styles = StyleSheet.create({
   imageCon: {
     width: (width / 3) - 3,
     height: ((width / 3) - 3) * 1.53
+  },
+  imageLeftCon: {
+    flexDirection: 'row',
+  },
+  imageLeftText: {
+    flexDirection: 'row',
+    marginRight: 2,
+    fontSize: 10
+  },
+  castsViewContainers: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+  },
+  castsViewContainer: {
+    margin: 2,
+  },
+  castsImage: {
+    width: 70,
+    height: 70 * 1.53
+  },
+  castsText: {
+    fontSize: 12,
+    width: 70,
+  },
+  summaryContainer: {
+    marginBottom: 5,
+    padding: 2,
+    backgroundColor: '#FFF'
+  },
+  summaryText: {
+    fontSize: 12,
   }
 });
