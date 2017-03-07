@@ -78,7 +78,6 @@ export default class InTheaters extends Component {
             loadingMore: false,
             items: [],
             dataSource: ds.cloneWithRows([]),
-            title: "正在上映",
         };
     }
 
@@ -86,7 +85,7 @@ export default class InTheaters extends Component {
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({
-                name: 'SubjectView',
+                name: movie.title,
                 component: SubjectView,
                 params: {
                     movie: movie

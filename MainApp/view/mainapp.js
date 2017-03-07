@@ -37,7 +37,7 @@ export default class MainApp extends Component {
       sceneStyle.paddingBottom = 0;
     }
     return (
-      <TabNavigator tabBarStyle={tabBarStyle}>
+      <TabNavigator tabBarStyle={tabBarStyle} sceneStyle={sceneStyle}>
         <TabNavigator.Item
           selected={this.state.selectedTab === firstScene.title}
           title={firstScene.title}

@@ -5,7 +5,7 @@ export default class NavigatorView extends Component {
     render() {
         return (
             <Navigator
-                initialRoute={{ name: this.props.rootScene.name, component: this.props.rootScene, index: 0 }}
+                initialRoute={{ name: this.props.rootScene.title, component: this.props.rootScene, index: 0 }}
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     return <Component {...route.params} navigator={navigator} />
@@ -37,7 +37,11 @@ export default class NavigatorView extends Component {
                             RightButton: (route, navigator, index, navState) =>
                             { return null; },
                             Title: (route, navigator, index, navState) => {
-                                return (<Text style={styles.navTitle}>{route.component.title}</Text>);
+                                if(route.name!=undefined){
+                                    return (<Text style={styles.navTitle}>{route.name}</Text>);    
+                                }else{
+                                    return (<Text style={styles.navTitle}>{route.component.title}</Text>);
+                                }
                             },
                         }}
                         style={styles.navBar}
