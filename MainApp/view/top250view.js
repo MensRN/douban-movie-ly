@@ -10,19 +10,21 @@ var {width, height} = Dimensions.get('window');
 class TopMovieCell extends Component {
   render() {
     return (
-      <View style={styles.item} >
-        <View style={styles.cellImageCon}>
-          <Image
-            source={{ uri: this.props.movie.images.large }}
-            style={styles.container}>
-            <Text style={styles.rating}>
-              {this.props.movie.rating.average}
-            </Text>
-          </Image>
+      <TouchableOpacity onPress={() => { this.props.onSelectMovie(this.props.movie); }}>
+        <View style={styles.item} >
+          <View style={styles.cellImageCon}>
+            <Image
+              source={{ uri: this.props.movie.images.large }}
+              style={styles.container}>
+              <Text style={styles.rating}>
+                {this.props.movie.rating.average}
+              </Text>
+            </Image>
+          </View>
+          <Text>{this.props.movie.title}</Text>
+          <Text>{this.props.movie.year}</Text>
         </View>
-        <Text>{this.props.movie.title}</Text>
-        <Text>{this.props.movie.year}</Text>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -60,12 +62,15 @@ export default class Top250View extends Component {
       });
   }
 
-  _pressButton() {
+  pressButton(movie) {
     const { navigator } = this.props;
     if (navigator) {
       navigator.push({
-        name: 'SubjectView',
+        name: movie.title,
         component: SubjectView,
+        params: {
+          movie: movie
+        }
       })
     }
   }
@@ -96,9 +101,10 @@ export default class Top250View extends Component {
           contentContainerStyle={styles.list}
           dataSource={this.state.dataSource}
           renderRow={(rowData) =>
-            <TouchableOpacity onPress={this._pressButton.bind(this)}>
-              <TopMovieCell style={styles.item} movie={rowData} ></TopMovieCell>
-            </TouchableOpacity>}
+            <TopMovieCell style={styles.item} 
+            movie={rowData} 
+            onSelectMovie={() => this.pressButton(rowData)}></TopMovieCell>
+          }
           onEndReached={this.onEndReached}
           renderFooter={this.renderFooter}
         />
