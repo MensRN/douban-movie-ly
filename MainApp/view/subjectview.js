@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, ListView, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 
+import Network from '../model/network';
+
 var {width, height} = Dimensions.get('window');
 
 export default class SubjectView extends Component {
@@ -9,8 +11,14 @@ export default class SubjectView extends Component {
 
   constructor(props) {
     super(props);
+    const genresDsConst = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const directorsDsConst = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const castsDsConst = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      movie: null
+      movie: null,
+      genresDS: genresDsConst.cloneWithRows([]),
+      directorsDs: directorsDsConst.cloneWithRows([]),
+      castsDs: castsDsConst.cloneWithRows([]),
     };
   }
 
@@ -38,36 +46,49 @@ export default class SubjectView extends Component {
     return string;
   }
 
+  loadData() {
+    Network.fetchDeatil(this.props.movie.id,
+      (data) => {
+        if (data != null) {
+          this.setState({
+            movie: data
+          });
+        }
+      });
+  }
+
   componentDidMount() {
-    //这里获取从FirstPageComponent传递过来的参数: id
     this.setState({
       movie: this.props.movie
     });
+    this.loadData();
   }
 
   render() {
     if (this.state.movie != null) {
       return (
         <ScrollView>
-          <View style={styles.cellImageCon}>
-            <Image
-              source={{ uri: this.state.movie.images.large }}
-              style={styles.container}>
-            </Image>
-          </View>
-          <View style={styles.cellTextCon}>
-            <Text style={styles.cellTextTitle}>
-              {this.state.movie.title}
-            </Text>
-            <Text style={styles.cellTextDirector}>
-              导演：{this.getDirectors(this.state.movie.directors)}
-            </Text>
-            <Text style={styles.cellTextGenres}>
-              {this.getGenres(this.state.movie.genres)}
-            </Text>
-            <Text style={styles.rating}>
-              {this.state.movie.rating.average}
-            </Text>
+          <View style={styles.topViewContainer}>
+            <View style={styles.imageCon}>
+              <Image
+                source={{ uri: this.state.movie.images.large }}
+                style={styles.container}>
+              </Image>
+            </View>
+            <View style={styles.textCon}>
+              <Text style={styles.titleChinese}>
+                {this.state.movie.title}
+              </Text>
+              <Text style={styles.titleOriginal}>
+                {this.state.movie.original_title}
+              </Text>
+              <Text style={styles.titleDirectors}>
+                导演：{this.getDirectors(this.state.movie.directors)}
+              </Text>
+              <Text style={styles.titleGenres}>
+                {this.getGenres(this.state.movie.genres)}
+              </Text>
+            </View>
           </View>
         </ScrollView>
       );
@@ -78,17 +99,26 @@ export default class SubjectView extends Component {
 }
 
 var styles = StyleSheet.create({
-  list: {
+  topViewContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
+    margin: 10
   },
-  item: {
-    backgroundColor: '#ffffff',
-    margin: 1,
-    alignItems: 'center',
-    width: (width / 3) - 3,
-    height: ((width / 3) - 3) * 1.8
+  titleChinese: {
+    fontSize: 17,
+  },
+  titleOriginal: {
+    fontSize: 12,
+  },
+  titleDirectors: {
+    fontSize: 12,
+    color: 'gray'
+  },
+  titleGenres: {
+    fontSize: 12,
+    color: 'gray'
+  },
+  textCon: {
+    marginLeft: 10
   },
   container: {
     flex: 1,
@@ -98,15 +128,8 @@ var styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end'
   },
-  cellImageCon: {
+  imageCon: {
     width: (width / 3) - 3,
-    height: ((width / 3) - 3) * 1.53,
-  },
-  rating: {
-    fontSize: 20,
-    color: 'white',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-    textShadowColor: 'grey'
+    height: ((width / 3) - 3) * 1.53
   }
 });
