@@ -20,7 +20,7 @@ export default class Network {
                 paraString = paraString + "&" + property + "=" + para[property];
             }
         }
-        var requestUrl = testHost + url + paraString;
+        var requestUrl = doubanHost + url + paraString;
         console.log('requestUrl:' + requestUrl);
         return fetch(requestUrl)
             .then((response) => {

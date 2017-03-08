@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, ListView, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, ListView, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity, Button } from 'react-native';
 
 import Network from '../model/network';
+import Storage from '../model/storage';
 
 var {width, height} = Dimensions.get('window');
 
@@ -55,7 +56,7 @@ export default class SubjectView extends Component {
       });
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.setState({
       movie: this.props.movie
     });
@@ -66,6 +67,12 @@ export default class SubjectView extends Component {
     this.setState({
       showSummary: !this.state.showSummary
     });
+  }
+
+  favoriteMovie() {
+    if (this.state.movie != undefined) {
+      Storage.favoriteMovie(this.state.movie);
+    }
   }
 
   render() {
@@ -111,6 +118,12 @@ export default class SubjectView extends Component {
                 <Text style={styles.titleDirectors}>
                   看过:{this.state.movie.reviews_count}
                 </Text>
+                <Button
+                  onPress={this.favoriteMovie.bind(this)}
+                  title="收藏"
+                  color="#841584"
+                  accessibilityLabel="favorite"
+                />
               </View>
             </View>
           </View>

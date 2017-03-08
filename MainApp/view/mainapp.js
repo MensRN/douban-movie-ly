@@ -5,7 +5,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import NavigatorView from './navigatorView';
 import Top250View from './top250view';
 import InTheaters from './inTheaters';
-import SubjectView from './subjectview';
+import FavoriteMovie from './favoriteView'
 
 export default class MainApp extends Component {
 
@@ -27,7 +27,7 @@ export default class MainApp extends Component {
   render() {
     var firstScene = InTheaters;
     var secondScene = Top250View;
-    var thirdScene = SubjectView;
+    var thirdScene = FavoriteMovie;
 
     let tabBarStyle = {};
     let sceneStyle = {};
