@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 
-const doubanHost = "https://api.douban.com/v2/";
-const testHost = "http://localhost:12345/v2/";
+const userProduct = false;
+
+export const HOST = {
+    douban: 'https://api.douban.com/v2/',
+    test: 'http://localhost:12345/v2/',
+
+};
 
 export const URLS = {
     top: 'movie/top250',
@@ -10,6 +15,10 @@ export const URLS = {
 };
 
 export default class Network {
+
+    static Host() {
+        return userProduct ? HOST.douban : HOST.test;
+    }
 
     static requestNetwork(url, para, update) {
         var paraString = "";
@@ -20,7 +29,7 @@ export default class Network {
                 paraString = paraString + "&" + property + "=" + para[property];
             }
         }
-        var requestUrl = doubanHost + url + paraString;
+        var requestUrl = Host() + url + paraString;
         console.log('requestUrl:' + requestUrl);
         return fetch(requestUrl)
             .then((response) => {
