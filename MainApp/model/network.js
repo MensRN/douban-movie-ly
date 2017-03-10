@@ -29,7 +29,7 @@ export default class Network {
                 paraString = paraString + "&" + property + "=" + para[property];
             }
         }
-        var requestUrl = Host() + url + paraString;
+        var requestUrl = Network.Host() + url + paraString;
         console.log('requestUrl:' + requestUrl);
         return fetch(requestUrl)
             .then((response) => {

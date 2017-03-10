@@ -5,6 +5,7 @@ import Dimensions from 'Dimensions';
 import Network from '../model/network';
 
 import SubjectView from './subjectview';
+import Star from './star';
 
 var {width, height} = Dimensions.get('window');
 
@@ -58,6 +59,7 @@ class TheaterMovieCell extends Component {
                         <Text style={styles.rating}>
                             {this.props.movie.rating.average}
                         </Text>
+                        <Star rating={this.props.movie.rating.average}/>
                     </View>
                 </View>
             </TouchableOpacity>

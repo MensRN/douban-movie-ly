@@ -101,9 +101,9 @@ export default class Top250View extends Component {
           contentContainerStyle={styles.list}
           dataSource={this.state.dataSource}
           renderRow={(rowData) =>
-            <TopMovieCell style={styles.item} 
-            movie={rowData} 
-            onSelectMovie={() => this.pressButton(rowData)}></TopMovieCell>
+            <TopMovieCell style={styles.item}
+              movie={rowData}
+              onSelectMovie={() => this.pressButton(rowData)}></TopMovieCell>
           }
           onEndReached={this.onEndReached}
           renderFooter={this.renderFooter}

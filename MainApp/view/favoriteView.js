@@ -127,7 +127,7 @@ export default class FavoriteMovie extends Component {
                     renderRow={(rowData) =>
                         <FavoriteMovieCell style={styles.item} movie={rowData} onSelectMovie={() => this.pressButton(rowData)}></FavoriteMovieCell>
                     }
-                    //onEndReached={this.onEndReached}
+                    onEndReached={this.onEndReached}
                     renderFooter={this.renderFooter}
                 />
             </View>
