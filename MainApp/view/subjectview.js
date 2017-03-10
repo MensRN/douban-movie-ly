@@ -118,13 +118,10 @@ export default class SubjectView extends Component {
                 <Text style={styles.titleDirectors}>
                   看过:{this.state.movie.reviews_count}
                 </Text>
-                <Button
-                  onPress={this.favoriteMovie.bind(this)}
-                  title="收藏"
-                  color="#841584"
-                  accessibilityLabel="favorite"
-                />
               </View>
+              <TouchableOpacity style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingTop: 5 }} onPress={this.favoriteMovie.bind(this)}>
+                <Text style={{fontSize:12}} >收藏</Text>
+              </TouchableOpacity>
             </View>
           </View>
           {/* 简介 */}
