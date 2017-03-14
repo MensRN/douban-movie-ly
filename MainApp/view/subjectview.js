@@ -12,12 +12,11 @@ export default class SubjectView extends Component {
 
   constructor(props) {
     super(props);
-    const genresDsConst = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const directorsDsConst = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    const castsDsConst = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
     this.state = {
       movie: null,
       showSummary: false,
+      favorited: false
     };
   }
 
@@ -54,6 +53,19 @@ export default class SubjectView extends Component {
           });
         }
       });
+
+    Storage.readMovie(this.props.movie.id,
+      (data) => {
+        if (data != undefined) {
+          this.setState({
+            favorited: true,
+          });
+        } else {
+          this.setState({
+            favorited: false,
+          });
+        }
+      });
   }
 
   componentWillMount() {
@@ -70,9 +82,20 @@ export default class SubjectView extends Component {
   }
 
   favoriteMovie() {
-    if (this.state.movie != undefined) {
-      Storage.favoriteMovie(this.state.movie);
-    }
+    Storage.readMovie(this.props.movie.id,
+      (data) => {
+        if (data != undefined) {
+          Storage.removeMovie(this.state.movie.id);
+          this.setState({
+            favorited: false,
+          });
+        } else {
+          Storage.favoriteMovie(this.state.movie);
+          this.setState({
+            favorited: true,
+          });
+        }
+      });
   }
 
   render() {
@@ -120,7 +143,7 @@ export default class SubjectView extends Component {
                 </Text>
               </View>
               <TouchableOpacity style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingTop: 5 }} onPress={this.favoriteMovie.bind(this)}>
-                <Text style={{fontSize:12}} >收藏</Text>
+                <Text style={{ fontSize: 12 }} >{this.state.favorited ? "取消收藏" : "收藏"}</Text>
               </TouchableOpacity>
             </View>
           </View>

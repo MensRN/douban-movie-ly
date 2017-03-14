@@ -8,8 +8,12 @@ export const Keys = {
 
 export default class Storage {
 
+    static createKey(movieId){
+        return Keys.favoritesMovie + "-" + movieId
+    }
+
     static readMovie(movieId, update) {
-        var movieKey = Keys.favoritesMovie + "-" + movieId;
+        var movieKey = this.createKey(movieId);
 
         AsyncStorage.getItem(movieKey, (err, result) => {
             console.log(result);
@@ -18,9 +22,19 @@ export default class Storage {
     }
 
     static favoriteMovie(movie, update) {
-        var movieKey = Keys.favoritesMovie + "-" + movie.id;
+        var movieKey = this.createKey(movie.id);
 
         AsyncStorage.setItem(movieKey, JSON.stringify(movie), (err, result) => {
+            if (update != undefined) {
+                update(result);
+            }
+        });
+    }
+
+    static removeMovie(movieId, update) {
+        var movieKey = this.createKey(movieId);
+
+        AsyncStorage.removeItem(movieKey, (err, result) => {
             if (update != undefined) {
                 update(result);
             }
