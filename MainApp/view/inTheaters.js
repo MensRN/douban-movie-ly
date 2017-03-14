@@ -56,10 +56,7 @@ class TheaterMovieCell extends Component {
                         <Text style={styles.cellTextGenres}>
                             {this.getGenres(this.props.movie.genres)}
                         </Text>
-                        <Text style={styles.rating}>
-                            {this.props.movie.rating.average}
-                        </Text>
-                        <Star rating={this.props.movie.rating.average}/>
+                        <Star style={styles.rating} rating={this.props.movie.rating.average}/>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -195,6 +192,5 @@ var styles = StyleSheet.create({
     rating: {
         margin: 3,
         marginTop: 10,
-        fontSize: 12,
     }
 });

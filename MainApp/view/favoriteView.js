@@ -109,6 +109,10 @@ export default class FavoriteMovie extends Component {
         this.loadData();
     }
 
+    componentWillReceiveProps(){
+        this.loadData();
+    }
+
     renderFooter = () => {
         if (this.state.loadingMore) {
             return <ActivityIndicator style={{ alignItems: 'center', }} />;

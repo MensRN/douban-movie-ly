@@ -26,10 +26,9 @@ export default class Star extends Component {
     }
 
     render() {
-
         return (
             <View style={{ flexDirection: 'row', }}>
-                <Text>
+                <Text style={{paddingRight:3}}>
                     {this.props.rating}
                 </Text>
                 <View style={{ flexDirection: 'row', }}>
