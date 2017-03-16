@@ -35,6 +35,7 @@ class FavoriteMovieCell extends Component {
     }
 
     render() {
+        
         return (
             <TouchableOpacity onPress={() => { this.props.onSelectMovie(this.props.movie); }}>
                 <View style={styles.item} >
@@ -42,7 +43,6 @@ class FavoriteMovieCell extends Component {
                         <Image
                             source={{ uri: this.props.movie.images.large }}
                             style={styles.container}>
-
                         </Image>
                     </View>
                     <View style={styles.cellTextCon}>
@@ -84,21 +84,13 @@ export default class FavoriteMovie extends Component {
     }
 
     pressButton(movie) {
-        const { navigator } = this.props;
-        if (navigator) {
-            navigator.push({
-                name: movie.title,
-                component: SubjectView,
-                params: {
-                    movie: movie
-                }
-            })
-        }
+        this.props.navigation.navigate('Subject', { movie: movie });
     }
 
     loadData() {
         Storage.readAllMovie(
             (data) => {
+                console.log(data);
                 if (data != undefined) {
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRows(data),
@@ -111,7 +103,7 @@ export default class FavoriteMovie extends Component {
         this.loadData();
     }
 
-    componentWillReceiveProps(){
+    componentWillReceiveProps() {
         this.loadData();
     }
 
