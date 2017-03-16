@@ -31,7 +31,9 @@ class TopMovieCell extends Component {
 
 export default class Top250View extends Component {
 
-  static title = "Top250";
+  static navigationOptions = {
+        title: '经典250',
+    }
 
   constructor(props) {
     super(props);
@@ -41,8 +43,7 @@ export default class Top250View extends Component {
       index: 0,
       loadingMore: false,
       items: [],
-      dataSource: ds.cloneWithRows([]),
-      title: "Top250"
+      dataSource: ds.cloneWithRows([])
     };
   }
 
@@ -63,16 +64,7 @@ export default class Top250View extends Component {
   }
 
   pressButton(movie) {
-    const { navigator } = this.props;
-    if (navigator) {
-      navigator.push({
-        name: movie.title,
-        component: SubjectView,
-        params: {
-          movie: movie
-        }
-      })
-    }
+    this.props.navigation.navigate('Subject',{movie: movie});
   }
 
   componentDidMount() {

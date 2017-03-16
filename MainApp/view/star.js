@@ -6,19 +6,16 @@ export default class Star extends Component {
 
     renderList() {
         var starList = new Array(5);
-        console.log("-------------------------------------------------");
         var rating = Math.floor(this.props.rating);
         for (var i = 1; i <= 5; i++) {
             if (rating >= 2 * i) {
                 starList[i] = 2;
-            } else if ((rating < 2 * i)&&(rating > 2 * (i-1))) {
+            } else if ((rating < 2 * i) && (rating > 2 * (i - 1))) {
                 starList[i] = 1;
             } else {
                 starList[i] = 0;
             }
-            console.log("index:" + i + " item:", rating + " i*2:" + i * 2 + " starList:" + starList[i]);
         }
-
         return starList.map((item, i) => this.renderItem(item, i));
     }
 

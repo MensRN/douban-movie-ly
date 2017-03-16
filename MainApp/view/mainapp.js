@@ -1,76 +1,69 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, Image } from 'react-native';
-import TabNavigator from 'react-native-tab-navigator';
+// import TabNavigator from 'react-native-tab-navigator';
 
-import NavigatorView from './navigatorView';
+import { StackNavigator, TabNavigator } from 'react-navigation';
+
 import Top250View from './top250view';
 import InTheaters from './inTheaters';
 import FavoriteMovie from './favoriteView'
+import SubjectView from './subjectview';
 
-export default class MainApp extends Component {
+const TheaterScreen = StackNavigator({
+  InTheaters: { screen: InTheaters },
+  Subject: { screen: SubjectView },
+});
 
-  constructor(props) {
-    super(props);
-    var firstScene = InTheaters;
-    this.state = { 
-      selectedTab: firstScene.title,
-      showTabBar: true,
-    };
-  }
+TheaterScreen.navigationOptions = {
+  tabBar: ({ state }) => ({
+    label: '正在上映',
+    icon: ({ focused, tintColor }) => (
+      focused == true ?
+        <Image source={require('../resources/theaters.png')} /> :
+        <Image source={require('../resources/theater.png')} />
+    ),
+  })
+};
 
-  toggleTabBarVisibility(isShowTabBar) {
-    this.setState(state => ({
-      showTabBar: isShowTabBar
-    }));
-  }
+const TopScreen = StackNavigator({
+  Top: { screen: Top250View },
+  Subject: { screen: SubjectView },
+});
 
-  render() {
-    var firstScene = InTheaters;
-    var secondScene = Top250View;
-    var thirdScene = FavoriteMovie;
+TopScreen.navigationOptions = {
+  title: 'Top250',
+  tabBar: ({ state }) => ({
+    label: '经典250',
+    icon: ({ focused, tintColor }) => (
+      focused == true ?
+        <Image source={require('../resources/tops.png')} /> :
+        <Image source={require('../resources/top.png')} />
+    ),
+  })
+};
 
-    let tabBarStyle = {};
-    let sceneStyle = {};
-    if (!this.state.showTabBar) {
-      tabBarStyle.height = 0;
-      tabBarStyle.overflow = 'hidden';
-      sceneStyle.paddingBottom = 0;
-    }
-    return (
-      <TabNavigator tabBarStyle={tabBarStyle} sceneStyle={sceneStyle}>
-        <TabNavigator.Item
-          selected={this.state.selectedTab === firstScene.title}
-          title={firstScene.title}
-          renderIcon={() => <Image source={require('../resources/theater.png')} />}
-          renderSelectedIcon={() => <Image source={require('../resources/theaters.png')} />}
-          onPress={() => this.setState({ selectedTab: firstScene.title })}>
-          {<NavigatorView rootScene={firstScene} showTabBar={this.toggleTabBarVisibility.bind(this)}/>}
-        </TabNavigator.Item>
-        <TabNavigator.Item
-          selected={this.state.selectedTab === secondScene.title}
-          title={secondScene.title}
-          renderIcon={() => <Image source={require('../resources/top.png')} />}
-          renderSelectedIcon={() => <Image source={require('../resources/tops.png')} />}
-          onPress={() => this.setState({ selectedTab: secondScene.title })}>
-          {<NavigatorView rootScene={secondScene} showTabBar={this.toggleTabBarVisibility.bind(this)}/>}
-        </TabNavigator.Item>
-        <TabNavigator.Item
-          selected={this.state.selectedTab === thirdScene.title}
-          title={thirdScene.title}
-          renderIcon={() => <Image source={require('../resources/want.png')} />}
-          renderSelectedIcon={() => <Image source={require('../resources/wants.png')} />}
-          onPress={() => this.setState({ selectedTab: thirdScene.title })}>
-          {<NavigatorView rootScene={thirdScene} showTabBar={this.toggleTabBarVisibility.bind(this)}/>}
-        </TabNavigator.Item >
-      </TabNavigator>
-    )
-  }
-}
+const FavoriteScreen = StackNavigator({
+  Favorite: { screen: FavoriteMovie },
+  Subject: { screen: SubjectView },
+});
 
-const styles = StyleSheet.create({
-  tab: {
-    height: 64,
-    backgroundColor: '#000000',
-    alignItems: 'center'
-  }
-});  
+FavoriteScreen.navigationOptions = {
+  title: '收藏',
+  tabBar: ({ state }) => ({
+    label: '收藏',
+    icon: ({ focused, tintColor }) => (
+      focused == true ?
+        <Image source={require('../resources/wants.png')} /> :
+        <Image source={require('../resources/want.png')} />
+    ),
+  })
+};
+
+const MainApp = TabNavigator({
+  InTheaters: { screen: TheaterScreen },
+  Top: { screen: TopScreen },
+  Favorite: { screen: FavoriteScreen },
+});
+
+export default MainApp;
+

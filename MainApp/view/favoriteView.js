@@ -67,7 +67,9 @@ class FavoriteMovieCell extends Component {
 
 export default class FavoriteMovie extends Component {
 
-    static title = "收藏";
+    static navigationOptions = {
+        title: '收藏',
+    }
 
     constructor(props) {
         super(props);

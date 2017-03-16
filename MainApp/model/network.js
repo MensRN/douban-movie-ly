@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const userProduct = true;
+const userProduct = false;
 
 export const HOST = {
     douban: 'https://api.douban.com/v2/',

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, ListView, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Navigator } from 'react-native';
 import Dimensions from 'Dimensions';
+import { StackNavigator } from 'react-navigation';
+
 
 import Network from '../model/network';
 
@@ -56,7 +58,7 @@ class TheaterMovieCell extends Component {
                         <Text style={styles.cellTextGenres}>
                             {this.getGenres(this.props.movie.genres)}
                         </Text>
-                        <Star style={styles.rating} rating={this.props.movie.rating.average}/>
+                        <Star style={styles.rating} rating={this.props.movie.rating.average} />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -66,7 +68,9 @@ class TheaterMovieCell extends Component {
 
 export default class InTheaters extends Component {
 
-    static title = "正在上映";
+    static navigationOptions = {
+        title: '正在上映',
+    }
 
     constructor(props) {
         super(props);
@@ -81,16 +85,7 @@ export default class InTheaters extends Component {
     }
 
     pressButton(movie) {
-        const { navigator } = this.props;
-        if (navigator) {
-            navigator.push({
-                name: movie.title,
-                component: SubjectView,
-                params: {
-                    movie: movie
-                }
-            })
-        }
+        this.props.navigation.navigate('Subject',{movie: movie});
     }
 
     loadData() {

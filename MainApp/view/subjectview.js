@@ -8,7 +8,12 @@ var {width, height} = Dimensions.get('window');
 
 export default class SubjectView extends Component {
 
-  static title = "Detail";
+  static navigationOptions = {
+    title: '电影详情',
+    tabBar: ({ state, setParams }) => ({
+      visible:false
+    }),
+  }
 
   constructor(props) {
     super(props);
@@ -45,7 +50,8 @@ export default class SubjectView extends Component {
   }
 
   loadData() {
-    Network.fetchDeatil(this.props.movie.id,
+    const { params } = this.props.navigation.state;
+    Network.fetchDeatil(params.movie.id,
       (data) => {
         if (data != null) {
           this.setState({
@@ -54,7 +60,7 @@ export default class SubjectView extends Component {
         }
       });
 
-    Storage.readMovie(this.props.movie.id,
+    Storage.readMovie(params.movie.id,
       (data) => {
         if (data != undefined) {
           this.setState({
@@ -69,8 +75,9 @@ export default class SubjectView extends Component {
   }
 
   componentWillMount() {
+    const { params } = this.props.navigation.state;
     this.setState({
-      movie: this.props.movie
+      movie: params.movie
     });
     this.loadData();
   }
@@ -82,7 +89,8 @@ export default class SubjectView extends Component {
   }
 
   favoriteMovie() {
-    Storage.readMovie(this.props.movie.id,
+    const { params } = this.props.navigation.state;
+    Storage.readMovie(params.movie.id,
       (data) => {
         if (data != undefined) {
           Storage.removeMovie(this.state.movie.id);
