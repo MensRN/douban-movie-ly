@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-const userProduct = false;
+const userProduct = true;
 
 export const HOST = {
     douban: 'https://api.douban.com/v2/',
-    test: 'http://localhost:12345/v2/',
+    test: 'http://10.205.21.165:12345/v2/',
 
 };
 
