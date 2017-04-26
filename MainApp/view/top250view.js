@@ -138,4 +138,3 @@ var styles = StyleSheet.create({
     textShadowColor: 'grey'
   }
 });
-
